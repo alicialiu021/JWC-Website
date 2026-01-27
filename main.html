@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jackson Writing Center – Drawbot</title>
+
+  <!-- ========== CSS ========== -->
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #EB8F3F;
+    }
+
+    nav {
+      background: white;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .page {
+      background: white;
+      margin: 40px auto;
+      max-width: 1100px;
+      padding: 60px;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    p {
+      line-height: 1.6;
+      color: #444;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      font-size: 18px;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: black;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .step-bar {
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+
+    .step {
+      color: #aaa;
+    }
+
+    .step.active {
+      color: black;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav>
+    <strong>JWC</strong>
+    <div>
+      <a onclick="showPage('home')">Home</a>
+      <a onclick="showPage('write')">Write</a>
+      <a onclick="showPage('about')">About Us</a>
+    </div>
+  </nav>
+
+  <!-- ========== HOME PAGE ========== -->
+  <section id="home" class="page active">
+    <h1>Jackson Writing Center</h1>
+    <p>
+      Welcome to the Jackson Writing Center. Write your message and send it directly to our drawing machine.
+    </p>
+    <div class="button" onclick="showPage('write')">Start Writing</div>
+  </section>
+
+  <!-- ========== WRITE PAGE (STEP 1) ========== -->
+  <section id="write" class="page">
+
+    <div class="step-bar">
+      <span class="step active">Write</span> ▸ <span class="step">Confirmation</span>
+    </div>
+
+    <h1>Write</h1>
+
+    <div class="two-column">
+      <div>
+        <h2>Type your message below</h2>
+        <textarea id="messageInput" placeholder="Type what you want the drawbot to write..."></textarea>
+        <div class="button" onclick="goToConfirm()">Continue</div>
+      </div>
+      <div>
+        <p>
+          Your message will be sent to the drawing machine after confirmation.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========== CONFIRMATION PAGE (STEP 2) ========== -->
+  <section id="confirm" class="page">
+
+    <div class="step-bar">
+      <span class="step">Write</span> ▸ <span class="step active">Confirmation</span>
+    </div>
+
+    <h1>Confirmation</h1>
+    <p>Is this the message you wish to write?</p>
+
+    <div style="border:1px solid #ccc; padding:20px; border-radius:6px; min-height:100px;" id="previewBox"></div>
+
+    <div style="margin-top:30px;">
+      <div class="button" onclick="showPage('write')">Back</div>
+      <div class="button" style="margin-left:10px;" onclick="sendToArduino()">Confirm & Send</div>
+    </div>
+
+    <p id="status" style="margin-top:20px;"></p>
+  </section>
+
+  <!-- ========== ABOUT PAGE ========== -->
+  <section id="about" class="page">
+    <h1>About Us</h1>
+    <p>
+      The Jackson Writing Center helps writers develop ideas, structure, and confidence. This project connects writing with physical drawing machines.
+    </p>
+  </section>
+
+  <footer>
+    © 2026 Jackson Writing Center
+  </footer>
+
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script>
+    let currentMessage = "";
+    let port;
+    let writer;
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    function goToConfirm() {
+      const text = document.getElementById('messageInput').value;
+      if (text.trim() === "") {
+        alert("Please write something first!");
+        return;
+      }
+      currentMessage = text;
+      document.getElementById('previewBox').innerText = text;
+      showPage('confirm');
+    }
+
+    // ========== WEB SERIAL (BROWSER → ARDUINO) ==========
+
+    async function connectArduino() {
+      port = await navigator.serial.requestPort();
+      await port.open({ baudRate: 9600 });
+      writer = port.writable.getWriter();
+    }
+
+    async function sendToArduino() {
+      try {
+        if (!port) {
+          await connectArduino();
+        }
+
+        const data = currentMessage + "\n";
+        const encoder = new TextEncoder();
+        await writer.write(encoder.encode(data));
+
+        document.getElementById('status').innerText = "Message sent to drawbot successfully.";
+
+      } catch (err) {
+        document.getElementById('status').innerText = "Connection failed. Make sure Arduino is plugged in and try again.";
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+<!-- ========== ARDUINO CODE (UPLOAD THIS SEPARATELY) ==========
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (Serial.available()) {
+    String message = Serial.readStringUntil('\n');
+
+    // TODO:
+    // Convert message into drawbot commands
+    // Example: drawLetters(message);
+
+    Serial.println("Received: " + message);
+  }
+}
+
+============================================================ -->
