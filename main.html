@@ -110,7 +110,7 @@
 
   <!-- ========== NAVIGATION ========== -->
   <nav>
-    <strong>JWC</strong>
+    <strong style="cursor:pointer;" onclick="showPage('home')">JWC</strong>
     <div>
       <a onclick="showPage('home')">Home</a>
       <a onclick="showPage('write')">Write</a>
@@ -131,10 +131,11 @@
   <section id="write" class="page">
 
     <div class="step-bar">
-      <span class="step active">Write</span> ▸ <span class="step">Confirmation</span>
+      <span class="step active" onclick="showPage('write')" style="cursor:pointer;">Write</span> ▸ <span class="step" onclick="showPage('confirm')" style="cursor:pointer;">Confirmation</span>
     </div>
 
     <h1>Write</h1>
+    <p>Your message will be sent to the drawing machine after confirmation.</p>
 
     <div class="two-column">
       <div>
@@ -142,11 +143,7 @@
         <textarea id="messageInput" placeholder="Type what you want the drawbot to write..."></textarea>
         <div class="button" onclick="goToConfirm()">Continue</div>
       </div>
-      <div>
-        <p>
-          Your message will be sent to the drawing machine after confirmation.
-        </p>
-      </div>
+      
     </div>
 
   </section>
@@ -155,7 +152,7 @@
   <section id="confirm" class="page">
 
     <div class="step-bar">
-      <span class="step">Write</span> ▸ <span class="step active">Confirmation</span>
+      <span class="step active" onclick="showPage('write')" style="cursor:pointer;">Write</span> ▸ <span class="step" onclick="showPage('confirm')" style="cursor:pointer;">Confirmation</span>
     </div>
 
     <h1>Confirmation</h1>
@@ -193,14 +190,28 @@
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
+
+      // update step indicator colors (only inside active page)
+      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+
+      const activePage = document.getElementById(pageId);
+      const pageSteps = activePage.querySelectorAll('.step');
+
+      if (pageId === 'write' && pageSteps[0]) {
+        pageSteps[0].classList.add('active');
+      }
+
+      if (pageId === 'confirm' && pageSteps[1]) {
+        pageSteps[1].classList.add('active');
+      }
+
+      if (pageId === 'confirm') {
+        document.querySelectorAll('.step')[1]?.classList.add('active');
+      }
     }
 
     function goToConfirm() {
       const text = document.getElementById('messageInput').value;
-      if (text.trim() === "") {
-        alert("Please write something first!");
-        return;
-      }
       currentMessage = text;
       document.getElementById('previewBox').innerText = text;
       showPage('confirm');
