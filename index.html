@@ -32,9 +32,9 @@
 
     .page {
       background: white;
-      margin: 40px auto;
+      margin: 20px auto;
       max-width: 1100px;
-      padding: 60px;
+      padding: 40px;
       border-radius: 6px;
       display: none;
     }
@@ -74,7 +74,13 @@
       border: 1px solid #ccc;
       resize: none;
     }
-
+    .home-image {
+      max-width: 400px;
+      width: 100%;
+      margin: 30px auto;
+      display: block;
+      border-radius: 8px;
+    }
     .button {
       display: inline-block;
       margin-top: 20px;
@@ -86,7 +92,9 @@
       font-weight: 600;
       cursor: pointer;
     }
-
+    .center {
+      text-align: center;
+    }
     .step-bar {
       margin-bottom: 30px;
       font-weight: 600;
@@ -119,15 +127,15 @@
       <a onclick="showPage('home')">Home</a>
       <a onclick="showPage('write')">Write</a>
       <a onclick="showPage('about')">About Us</a>
+      <a onclick="showPage('login')">Login</a>
+      <a onclick="showPage('saved')">Saved</a>
     </div>
   </nav>
 
   <!-- ========== HOME PAGE ========== -->
-  <section id="home" class="page active">
+  <section id="home" class="page active center">
     <h1>Jackson Writing Center</h1>
-    <p>
-      Welcome to the Jackson Writing Center. Write your message and send it directly to our drawing machine.
-    </p>
+    <img src="images\homepage_img.jpg" class="home-image">
     <div class="button" onclick="showPage('write')">Start Writing</div>
   </section>
 
