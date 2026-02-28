@@ -119,6 +119,7 @@
       <a onclick="showPage('home')">Home</a>
       <a onclick="showPage('write')">Write</a>
       <a onclick="showPage('about')">About Us</a>
+      <a id="authLink" href="login.html">Login</a>
     </div>
   </nav>
 
@@ -192,6 +193,18 @@
     let writer;
 
     function showPage(pageId) {
+      // Protect the write page: require a session
+      if (pageId === 'write') {
+        try {
+          if (!sessionStorage.getItem('jwc_session')) {
+            location.href = 'login.html';
+            return;
+          }
+        } catch (e) {
+          location.href = 'login.html';
+          return;
+        }
+      }
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
 
@@ -213,6 +226,37 @@
         document.querySelectorAll('.step')[1]?.classList.add('active');
       }
     }
+
+    // If user opens index.html with a hash (e.g. #write), navigate there.
+    document.addEventListener('DOMContentLoaded', () => {
+      // Toggle auth link to Login / Logout depending on session
+      const authLink = document.getElementById('authLink');
+      if (authLink) {
+        try {
+          if (sessionStorage.getItem('jwc_session')) {
+            authLink.innerText = 'Logout';
+            authLink.href = '#';
+            authLink.onclick = (e) => { e.preventDefault(); sessionStorage.removeItem('jwc_session'); location.reload(); };
+          } else {
+            authLink.innerText = 'Login';
+            authLink.href = 'login.html';
+            authLink.onclick = null;
+          }
+        } catch (e) {
+          // ignore
+        }
+      }
+
+      if (location.hash) {
+        const id = location.hash.replace('#','');
+        if (id === 'write') {
+          // showPage will redirect to login if not authenticated
+          showPage('write');
+        } else if (document.getElementById(id)) {
+          showPage(id);
+        }
+      }
+    });
 
     function goToConfirm() {
       const text = document.getElementById('messageInput').value;
