@@ -43,7 +43,7 @@ function loginUser(){
   // set session
   sessionStorage.setItem('jwc_session', JSON.stringify({ username, ts: Date.now() }));
   setMessage('Login successful — redirecting...');
-  setTimeout(()=>{ location.href = 'index.html#write'; }, 700);
+  setTimeout(()=>{ location.href = 'write.html'; }, 700);
 }
 
 function logoutUser(){
@@ -54,6 +54,6 @@ function logoutUser(){
 // Auto-redirect logged-in users away from login page
 if(location.pathname.endsWith('login.html')){
   try{
-    if(sessionStorage.getItem('jwc_session')) location.href = 'index.html#write';
+    if(sessionStorage.getItem('jwc_session')) location.href = 'write.html';
   }catch(e){}
 }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <title>Confirmation — Jackson Writing Center</title>
+  <link rel="stylesheet" href="css/pagestyle.css">
+</head>
+<body>
+
+  <nav>
+    <div class="brand">
+      <img src="images/logo.png" alt="Jackson Writing Center Logo" height="20" style="vertical-align: middle"/>
+      <strong>Jackson Writing Center</strong>
+    </div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="write.html">Write</a>
+      <a href="about.html">About Us</a>
+      <a id="authLink" href="login.html">Login</a>
+    </div>
+  </nav>
+
+  <section id="confirm" class="page active">
+
+    <div class="step-bar">
+      <span class="step" onclick="window.location='write.html'" style="cursor:pointer;">Write</span> ▸
+      <span class="step active">Confirmation</span>
+    </div>
+
+    <h1>Confirmation</h1>
+    <p>Is this the message you wish to write?</p>
+
+    <div style="border:1px solid #ccc; padding:20px; border-radius:6px; min-height:100px;" id="previewBox"></div>
+
+    <div style="margin-top:30px;">
+      <div class="button" onclick="window.location='write.html'">Back</div>
+      <div class="button" style="margin-left:10px;" onclick="sendToArduino()">Confirm & Send</div>
+    </div>
+
+    <p id="status" style="margin-top:20px;"></p>
+  </section>
+
+  <!-- ========== ARDUINO CODE (UPLOAD THIS SEPARATELY) ==========
+
+  void setup() {
+    Serial.begin(9600);
+  }
+
+  void loop() {
+    if (Serial.available()) {
+      String message = Serial.readStringUntil('\n');
+      Serial.println("Received: " + message);
+    }
+  }
+
+  ============================================================ -->
+
+  <script src="js/script.js"></script>
+<script>
+  // Auth guard
+  if (!sessionStorage.getItem('jwc_session')) {
+    location.href = 'login.html';
+  }
+
+  // Retrieve message passed from write.html
+  const saved = sessionStorage.getItem('jwc_pending_message');
+  if (!saved) {
+    location.href = 'write.html';
+  } else {
+    currentMessage = saved;
+    document.getElementById('previewBox').innerText = saved;
+  }
+</script>
+</body>
+</html>

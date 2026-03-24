@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="images/logo.png" />
-  <title>Jackson Writing Center</title>
+  <title>About Us — Jackson Writing Center</title>
   <link rel="stylesheet" href="css/pagestyle.css">
 </head>
 <body>
@@ -22,31 +22,17 @@
     </div>
   </nav>
 
-  <section id="home" class="page active center">
-    <h1>Jackson Writing Center</h1>
-    <img src="images/homepage_img.jpg" class="home-image">
-    <div class="button" onclick="window.location='write.html'">Start Writing</div>
+  <section id="about" class="page active">
+    <h1>About Us</h1>
+    <p>
+      The Jackson Writing Center helps writers develop ideas, structure, and confidence.
+      This project connects writing with physical drawing machines.
+    </p>
   </section>
 
   <footer>
     © 2026 Jackson Writing Center
   </footer>
-
-  <!-- ========== ARDUINO CODE (UPLOAD THIS SEPARATELY) ==========
-
-  void setup() {
-    Serial.begin(9600);
-  }
-
-  void loop() {
-    if (Serial.available()) {
-      String message = Serial.readStringUntil('\n');
-      Serial.println("Received: " + message);
-    }
-  }
-
-  ============================================================ -->
-
   <script src="js/script.js"></script>
 </body>
 </html>
