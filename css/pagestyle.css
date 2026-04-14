@@ -32,7 +32,17 @@ nav a {
 .active {
     display: block;
 }
-
+.user-student-display {
+  color: #333;
+  font-weight: 700;
+  font-size: 1.1em;
+  margin: 0 20px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 20px;
+  border: 2px solid #007bff;
+  white-space: nowrap;
+}
 h1 {
     font-size: 42px;
     margin-bottom: 15px;
@@ -64,7 +74,7 @@ textarea {
     border-radius: 6px;
     border: 1px solid #ccc;
     resize: none; 
-    
+    box-sizing: border-box;
 }
 .home-image {
     max-width: 400px;
@@ -110,4 +120,259 @@ footer {
     text-align: center;
     padding: 30px;
     color: #333;
+}
+/* Students Page Styles */
+.students-list {
+  margin: 20px 0;
+}
+
+.student-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  margin: 10px 0;
+  background: #f5f5f5;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.student-item:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.student-item.selected {
+  background: #d4edda;
+  border-left-color: #28a745;
+  box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+}
+
+.student-name {
+  flex: 1;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.student-skill {
+  color: #666;
+  font-style: italic;
+}
+
+.student-info {
+  flex: 1;
+}
+
+.student-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn, .remove-btn, .history-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.edit-btn {
+  background: #007bff;
+  color: white;
+}
+
+.history-btn {
+  background: #ffc107;
+  color: #212529;
+}
+
+.remove-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.history-btn:hover { 
+  background: #e0a800; 
+}
+
+.edit-btn:hover { 
+  background: #0056b3; 
+}
+
+.remove-btn:hover { 
+  background: #c82333; 
+}
+
+.current-student {
+  background: #fff3cd;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 2px solid #ffc107;
+}
+
+/* Student Popup */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.popup h3 {
+  margin-top: 0;
+}
+
+.popup input {
+  width: 100%;
+  padding: 10px;
+  margin: 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.popup-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.confirm-btn {
+  background: #28a745;
+  color: white;
+}
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+}
+/* History Popup */
+#historyPopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 1001;
+  justify-content: center;
+  align-items: center;
+}
+
+.history-list {
+  max-height: 400px;
+  overflow-y: auto;
+  margin: 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #f8f9fa;
+}
+
+.history-item {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-item:hover {
+  background: #e9ecef;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-item.selected {
+  background: #d4edda;
+  border-left: 4px solid #28a745;
+}
+
+.history-preview {
+  font-size: 0.95em;
+  color: #495057;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.history-date {
+  font-size: 0.85em;
+  color: #6c757d;
+  white-space: nowrap;
+}
+
+.history-count {
+  background: #007bff;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+/* Confirm Remove Popup */
+#removePopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 1002;
+  justify-content: center;
+  align-items: center;
+}
+
+#removePopup .popup {
+  text-align: center;
+  max-width: 350px;
+}
+
+#removePopup .popup h3 {
+  color: #dc3545;
+  margin-bottom: 10px;
+}
+
+.warning-icon {
+  font-size: 3em;
+  color: #ffc107;
+  margin-bottom: 15px;
 }

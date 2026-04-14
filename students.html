@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <title>Students — Jackson Writing Center</title>
+  <link rel="stylesheet" href="css/pagestyle.css">
+</head>
+<body>
+
+  <nav>
+    <div class="brand">
+      <img src="images/logo.png" alt="Jackson Writing Center Logo" height="20" style="vertical-align: middle"/>
+      <strong>Jackson Writing Center</strong>
+    </div>
+    <div>
+      <span class="user-student-display"></span>
+      <a href="index.html">Home</a>
+      <a href="write.html">Write</a>
+      <a href="about.html">About Us</a>
+      <a href="Students.html">Students</a>
+      <a id="authLink" href="login.html">Login</a>
+    </div>
+  </nav>
+
+  <section id="students" class="page active center">
+    <h1>Students</h1>
+    <div class="students-list" id="studentsList">
+      <!-- Students will be populated by JavaScript -->
+    </div>
+    <div>
+      <div class="button" id="addStudentBtn">+</div>
+    </div>
+    <!-- History Popup -->
+
+  </section>
+<div id="historyPopup" class="popup-overlay">
+    <div class="popup">
+      <h3 id="historyTitle">Writing History</h3>
+      <div id="historyList" class="history-list"></div>
+      <div class="popup-buttons">
+        <button class="popup-btn cancel-btn" id="historyCancelBtn">Close</button>
+        <button class="popup-btn confirm-btn" id="loadHistoryBtn" style="display: none;">Load Selected</button>
+      </div>
+    </div>
+  </div>
+    <div id="removePopup" class="popup-overlay">
+    <div class="popup">
+      <h3 id="removeStudentName"></h3>
+      <div class="popup-buttons">
+        <button class="popup-btn cancel-btn" id="removeCancelBtn">Cancel</button>
+        <button class="popup-btn" style="background: #dc3545; color: white;" id="removeConfirmBtn">Remove Student</button>
+      </div>
+    </div>
+  </div>
+  <!-- Popup for adding/editing student -->
+  <div id="studentPopup" class="popup-overlay">
+    <div class="popup">
+      <h3 id="popupTitle">Add New Student</h3>
+      <input type="text" id="studentNameInput" placeholder="Enter student name" />
+      <div class="popup-buttons">
+        <button class="popup-btn cancel-btn" id="cancelBtn">Cancel</button>
+        <button class="popup-btn confirm-btn" id="confirmBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2026 Jackson Writing Center
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script>
+    // Auth guard
+    if (!sessionStorage.getItem('jwc_session')) {
+      location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
