@@ -2,7 +2,7 @@
 let currentMessage = "";
 let port;
 let writer;
-setTimeout(updateUserStudentDisplay, 100);
+setTimeout(updateUserStudentDisplay, 50);
 window.addEventListener('load', updateUserStudentDisplay);
 window.addEventListener('storage', updateUserStudentDisplay);
 
@@ -125,7 +125,7 @@ if (document.getElementById('students')) {
   function selectStudent(studentId) {
     currentStudentId = studentId;
     localStorage.setItem('jwc_current_student_id', studentId);
-    location.reload();
+    setTimeout(updateUserStudentDisplay, 50);
   }
 
   function clearCurrentStudent() {
@@ -195,9 +195,8 @@ if (document.getElementById('students')) {
     saveStudents();
     hidePopup();
     renderStudents();
-    setTimeout(updateUserStudentDisplay, 100);
-window.addEventListener('load', updateUserStudentDisplay);
-window.addEventListener('storage', updateUserStudentDisplay);
+    setTimeout(updateUserStudentDisplay, 50);
+
   }
 
   function hidePopup() {
@@ -208,12 +207,6 @@ window.addEventListener('storage', updateUserStudentDisplay);
   function showHistory(index) {
     const student = students[index];
     document.historyStudentIndex = index;
-    
-    if (!student.history || student.history.length === 0) {
-      alert(`${student.name} has no writing history yet.`);
-      return;
-    }
-
     document.getElementById('historyTitle').textContent = `${student.name}'s Writing History`;
     renderHistoryList(student.history);
     document.getElementById('historyPopup').style.display = 'flex';
@@ -267,7 +260,7 @@ window.addEventListener('storage', updateUserStudentDisplay);
     const student = students[index];
     document.removeStudentIndex = index;
     const nameEl = document.getElementById('removeStudentName');
-    if (nameEl) nameEl.textContent = `Remove ${student.name}?`;
+    if (nameEl) nameEl.textContent = `Remove ${student.name} from Students?`;
     document.getElementById('removePopup').style.display = 'flex';
   }
 
@@ -280,11 +273,8 @@ window.addEventListener('storage', updateUserStudentDisplay);
     saveStudents();
     hideRemovePopup();
     renderStudents();
+    setTimeout(updateUserStudentDisplay, 50);
   }
-  updateUserStudentDisplay();
-
-  // Listen for storage changes (if user switches tabs)
-  window.addEventListener('storage', updateUserStudentDisplay);
 };
   function hideRemovePopup() {
     document.getElementById('removePopup').style.display = 'none';
@@ -295,7 +285,7 @@ window.addEventListener('storage', updateUserStudentDisplay);
     const currentStudentId = localStorage.getItem('jwc_current_student_id');
     const students = JSON.parse(localStorage.getItem('jwc_students')) || [];
     
-    let displayText = '';
+    let displayText = 'Not logged in';
     
     if (session) {
       // Extract username from session (assuming it's stored as JSON)

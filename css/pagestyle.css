@@ -40,7 +40,7 @@ nav a {
   padding: 8px 12px;
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
   border-radius: 20px;
-  border: 2px solid #007bff;
+  border: 2px solid #ff8d2f;
   white-space: nowrap;
 }
 h1 {
@@ -184,8 +184,8 @@ footer {
 }
 
 .history-btn {
-  background: #ffc107;
-  color: #212529;
+  background: #ff8d2f;
+  color: white;
 }
 
 .remove-btn {
@@ -194,7 +194,7 @@ footer {
 }
 
 .history-btn:hover { 
-  background: #e0a800; 
+  background: #c76210; 
 }
 
 .edit-btn:hover { 
@@ -362,17 +362,11 @@ footer {
 }
 
 #removePopup .popup {
-  text-align: center;
+  text-align: left;
   max-width: 350px;
 }
 
 #removePopup .popup h3 {
-  color: #dc3545;
+  color: #000000;
   margin-bottom: 10px;
-}
-
-.warning-icon {
-  font-size: 3em;
-  color: #ffc107;
-  margin-bottom: 15px;
 }
